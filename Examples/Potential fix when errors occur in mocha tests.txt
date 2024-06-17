@@ -1,0 +1,47 @@
+There are a few potential issues and improvements in your code snippet:
+
+1. Typo: `'content-type': 'aplication/json'` should be `'content-type': 'application/json'`.
+
+2. Error Handling: You should handle errors that might occur during the fetch operation, for example, network errors or server errors.
+
+3. Asynchronous Operations: The `fetchPresentsFromDataBase()` function is likely asynchronous, so you need to make sure it's executed after the POST request is complete. You can achieve this by placing it inside the `.then()` block of the fetch operation.
+
+Here's the modified code considering these points:
+
+```javascript
+addPresentButton.addEventListener('click', add => {
+    let presentToAdd = presentInputField.value;
+    let presentFor = forInputField.value;
+    let presentPrice = priceInputField.value;
+    
+    fetch(baseURL, {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            gift: presentToAdd,
+            for: presentFor,
+            price: presentPrice,
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        // Assuming fetchPresentsFromDataBase() returns a Promise
+        return fetchPresentsFromDataBase();
+    })
+    .then(() => {
+        presentInputField.value = '';
+        forInputField.value = '';
+        priceInputField.value = '';
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Handle the error appropriately, e.g., show a message to the user
+    });
+});
+```
+
+This code includes error handling for the fetch operation and ensures that the input fields are cleared only after the POST request is successfully completed.

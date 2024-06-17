@@ -1,0 +1,1 @@
+//Instead of nesting eventListeners too much to get access to info about current element, just use elements that are empty of id and set the info as id of those elements so you can access them globally, dont forget to remove the id of those elements after you are done using them!
